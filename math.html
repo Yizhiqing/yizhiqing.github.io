@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中学受験算数学習リソース - 知行教育</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        /* Header styles */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            border-bottom: 1px solid #eee;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo h1 {
+            font-size: 24px;
+            color: #2185d0;
+            margin-left: 10px;
+        }
+        .search-bar {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 30px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .user-actions a {
+            margin-left: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        .user-actions a:hover {
+            color: #2185d0;
+        }
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+        }
+        .main-nav a {
+            margin: 0 25px;
+            font-size: 16px;
+            color: #333;
+            position: relative;
+        }
+        .main-nav a.active, .main-nav a:hover {
+            color: #2185d0;
+        }
+        .main-nav a.active:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #2185d0;
+        }
+
+        /* Main content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 50px;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #2185d0;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .separator {
+            margin: 0 10px;
+        }
+        
+        /* Page header */
+        .page-header {
+            margin-bottom: 30px;
+        }
+        .page-title {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2185d0;
+        }
+        
+        /* Content sections */
+        .content-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .content-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .content-section p {
+            margin-bottom: 15px;
+        }
+        
+        /* Subject menu */
+        .subject-menu {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .subject-menu a {
+            flex: 1;
+            padding: 15px 0;
+            text-align: center;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .subject-menu a:hover, .subject-menu a.active {
+            background-color: #f9f9f9;
+            color: #2185d0;
+            border-bottom-color: #2185d0;
+        }
+        
+        /* Course cards */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .course-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .course-image {
+            height: 160px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+        }
+        .course-content {
+            padding: 15px;
+        }
+        .course-category {
+            font-size: 12px;
+            color: #2185d0;
+            margin-bottom: 5px;
+        }
+        .course-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            height: 44px;
+            overflow: hidden;
+        }
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+        }
+        .tag-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: #f0f8ff;
+            color: #2185d0;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        /* Feature grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .feature-box {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .feature-box h3 {
+            color: #2185d0;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-box ul {
+            list-style-position: inside;
+            margin-top: 10px;
+        }
+        .feature-box li {
+            margin-bottom: 8px;
+        }
+        
+        /* CTA section */
+        .cta-section {
+            background: linear-gradient(135deg, #2185d0, #7057f6);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .cta-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            margin-bottom: 25px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: white;
+            color: #2185d0;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .footer-column ul {
+            list-style: none;
+        }
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+        .footer-column a {
+            color: #bdc3c7;
+            transition: color 0.2s;
+        }
+        .footer-column a:hover {
+            color: white;
+        }
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                padding: 15px;
+            }
+            .search-bar {
+                margin: 15px 0;
+                max-width: 100%;
+            }
+            .main-nav {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 15px;
+            }
+            .subject-menu {
+                flex-direction: column;
+            }
+            .subject-menu a {
+                padding: 12px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .content-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">
+                <h1>知行教育</h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="コース、リソースを検索...">
+            </div>
+            <div class="user-actions">
+                <a href="#">ログイン</a>
+                <a href="#">登録</a>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <a href="index.html">ホーム</a>
+            <a href="index.html#primary" class="active">基礎教育</a>
+            <a href="index.html#languages">語学教育</a>
+            <a href="index.html#it">ITとAI教育</a>
+            <a href="index.html#about">私たちについて</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="breadcrumb">
+            <a href="index.html">ホーム</a>
+            <span class="separator">&gt;</span>
+            <a href="index.html#primary">基礎教育</a>
+            <span class="separator">&gt;</span>
+            <span>中学受験算数</span>
+        </div>
+        
+        <div class="page-header">
+            <h1 class="page-title">中学受験算数学習リソース</h1>
+        </div>
+        
+        <section class="content-section">
+            <h2>中学受験における算数の重要性</h2>
+            <p>算数は中学受験において最も配点が高く、合否を大きく左右する重要科目です。特に難関中学校では、単に公式を覚えて解くだけでなく、図形の性質の理解や数理的な思考力、応用力が問われます。多くの学校では、算数の試験時間が他の科目よりも長く設定されており、その重要性が伺えます。</p>
+            <p>このセクションでは、中学受験に特化した算数の学習リソースを提供し、各単元の重要概念の理解、問題解決のための考え方、効率的な解法テクニックなど、合格に必要な知識と解法のコツを学ぶことができます。</p>
+        </section>
+        
+        <div class="subject-menu">
+            <a href="#number" class="active">数と計算</a>
+            <a href="#geometry">図形</a>
+            <a href="#quantity">量と測定</a>
+            <a href="#data">数量関係</a>
+            <a href="#exam-strategies">入試対策</a>
+        </div>
+        
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=速さと比')"></div>
+                <div class="course-content">
+                    <div class="course-category">数と計算</div>
+                    <h3 class="course-title">速さ・割合・比 - 入試頻出ポイント</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">速さの三公式</span>
+                        <span class="tag-pill">割合と比</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>18個の学習リソース</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <a href="math/solids.html" class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=立体図形')"></div>
+                <div class="course-content">
+                    <div class="course-category">図形</div>
+                    <h3 class="course-title">立体図形の性質と解法テクニック</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">体積と表面積</span>
+                        <span class="tag-pill">切断と展開図</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>15個の学習リソース</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </a>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=平面図形')"></div>
+                <div class="course-content">
+                    <div class="course-category">図形</div>
+                    <h3 class="course-title">平面図形の性質と証明</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">合同と相似</span>
+                        <span class="tag-pill">面積</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>20個の学習リソース</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=場合の数')"></div>
+                <div class="course-content">
+                    <div class="course-category">数量関係</div>
+                    <h3 class="course-title">場合の数と確率</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">樹形図</span>
+                        <span class="tag-pill">順列と組合せ</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>12個の学習リソース</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=規則性')"></div>
+                <div class="course-content">
+                    <div class="course-category">数量関係</div>
+                    <h3 class="course-title">規則性と数列</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">数の性質</span>
+                        <span class="tag-pill">漸化式</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>14個の学習リソース</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=関数')"></div>
+                <div class="course-content">
+                    <div class="course-category">関数</div>
+                    <h3 class="course-title">関数とグラフ</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">比例と反比例</span>
+                        <span class="tag-pill">座標平面</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>16個の学習リソース</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-box" id="exam-strategies">
+                <h3>中学受験算数の学習方法</h3>
+                <ul>
+                    <li>基本的な公式や性質を確実に理解し、暗記ではなく「なぜそうなるのか」を考える</li>
+                    <li>図を描いて視覚的に問題を捉える習慣をつける</li>
+                    <li>問題を解くときは、まず条件を整理してから取り組む</li>
+                    <li>複数の解法がある場合は、最も効率的な方法を選ぶ訓練をする</li>
+                    <li>計算ミスを減らすために、見直しの時間を確保する</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <h3>中学受験算数の出題傾向</h3>
+                <ul>
+                    <li>図形の性質を理解し、面積や体積を求める問題</li>
+                    <li>速さ・割合・比などを扱う文章題</li>
+                    <li>規則性を見つけて数列の一般項を求める問題</li>
+                    <li>場合の数や確率の考え方を問う問題</li>
+                    <li>関数とグラフの性質を利用した応用問題</li>
+                </ul>
+            </div>
+            
+            <div class="feature-box">
+                <h3>学校別の算数出題の特徴</h3>
+                <p>難関校では特に算数の配点が高く、合否を大きく左右します。例えば、開成中学では図形の性質や論理的思考力を問う問題、麻布中学では独創的な発想が必要な問題、筑波大学附属中学では数の性質や関数を応用した問題など、学校によって特徴が異なります。</p>
+                <p>志望校の過去問を分析し、その学校の出題傾向に合わせた対策が重要です。当サイトでは各学校の出題傾向と対策ポイントを提供しています。</p>
+            </div>
+        </div>
+        
+        <section class="cta-section">
+            <h2>中学受験算数の学習をサポート</h2>
+            <p>難関中学合格に必要な算数の知識と解法テクニックを体系的に学べるリソースを随時更新しています。基礎から応用まで、志望校に合わせた効率的な学習をサポートします。</p>
+            <a href="math/solids.html" class="cta-button">立体図形の学習を始める</a>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>知行教育について</h3>
+                <p>知行教育は2025年に設立された非営利教育リソース共有プラットフォームで、質の高い総合的な学習リソースの提供に努めています。様々な学習資料を共有し、自主学習とスマート教育をサポートしています。</p>
+            </div>
+            <div class="footer-column">
+                <h3>学習リソース</h3>
+                <ul>
+                    <li><a href="index.html#primary">基礎教育</a></li>
+                    <li><a href="index.html#languages">語学学習リソース</a></li>
+                    <li><a href="index.html#it">ITとAI学習リソース</a></li>
+                    <li><a href="#">学習ツールダウンロード</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>ヘルプセンター</h3>
+                <ul>
+                    <li><a href="#">利用ガイド</a></li>
+                    <li><a href="#">よくある質問</a></li>
+                    <li><a href="#">リソースフィードバック</a></li>
+                    <li><a href="#">学習アドバイス</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>お問い合わせ</h3>
+                <p>ご質問やご提案がございましたら、以下の方法でお問い合わせください：</p>
+                <p>Eメール：contact@zhixing-edu.com</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 知行教育 | 教育リソース共有プラットフォーム | 最終更新：2025年4月27日</p>
+        </div>
+    </footer>
+</body>
+</html>

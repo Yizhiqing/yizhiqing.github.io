@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>立体図形の性質と解法テクニック - 知行教育</title>
+    <!-- MathJax の読み込み -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        /* Header styles */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            border-bottom: 1px solid #eee;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo h1 {
+            font-size: 24px;
+            color: #2185d0;
+            margin-left: 10px;
+        }
+        .search-bar {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 30px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .user-actions a {
+            margin-left: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        .user-actions a:hover {
+            color: #2185d0;
+        }
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+        }
+        .main-nav a {
+            margin: 0 25px;
+            font-size: 16px;
+            color: #333;
+            position: relative;
+        }
+        .main-nav a.active, .main-nav a:hover {
+            color: #2185d0;
+        }
+        .main-nav a.active:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #2185d0;
+        }
+
+        /* Main content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 50px;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .breadcrumb a {
+            color: #2185d0;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .separator {
+            margin: 0 10px;
+        }
+        
+        /* Page header */
+        .page-header {
+            margin-bottom: 30px;
+        }
+        .page-title {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #2185d0;
+        }
+        
+        /* Content sections */
+        .content-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .content-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .content-section h3 {
+            color: #2c3e50;
+            margin: 25px 0 15px;
+            font-size: 20px;
+        }
+        .content-section p {
+            margin-bottom: 15px;
+        }
+        .content-section ul, .content-section ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        .content-section li {
+            margin-bottom: 8px;
+        }
+        
+        /* Topic navigation */
+        .topic-nav {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .topic-nav h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        .topic-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        .topic-links a {
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+            transition: all 0.2s;
+        }
+        .topic-links a:hover {
+            background-color: #e5f2ff;
+            color: #2185d0;
+        }
+        .topic-links a.active {
+            background-color: #2185d0;
+            color: white;
+        }
+        
+        /* Formula box */
+        .formula-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #2185d0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .formula-box h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .formula {
+            font-family: "Times New Roman", serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        /* Example box */
+        .example-box {
+            background-color: #f0f8ff;
+            border: 1px solid #d1e6ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .example-box h4 {
+            color: #2185d0;
+            margin-bottom: 15px;
+        }
+        .example-solution {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #d1e6ff;
+        }
+
+        /* Tip box */
+        .tip-box {
+            background-color: #fffaed;
+            border-left: 4px solid #f9ca24;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .tip-box h4 {
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+        
+        /* Image container */
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .image-caption {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        /* Quiz section */
+        .quiz-section {
+            background-color: #f0f8ff;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        .quiz-section h3 {
+            color: #2185d0;
+            margin-bottom: 20px;
+        }
+        .quiz-question {
+            margin-bottom: 25px;
+        }
+        .quiz-question p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .quiz-options label {
+            display: block;
+            padding: 10px;
+            margin-bottom: 8px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-options label:hover {
+            background-color: #e5f2ff;
+            border-color: #2185d0;
+        }
+        
+        /* CTA section */
+        .cta-section {
+            background: linear-gradient(135deg, #2185d0, #7057f6);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .cta-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            margin-bottom: 25px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: white;
+            color: #2185d0;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .footer-column ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+        .footer-column a {
+            color: #bdc3c7;
+            transition: color 0.2s;
+        }
+        .footer-column a:hover {
+            color: white;
+        }
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                padding: 15px;
+            }
+            .search-bar {
+                margin: 15px 0;
+                max-width: 100%;
+            }
+            .main-nav {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 15px;
+            }
+            .topic-links {
+                grid-template-columns: 1fr;
+            }
+            .content-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">
+                <h1>知行教育</h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="コース、リソースを検索...">
+            </div>
+            <div class="user-actions">
+                <a href="#">ログイン</a>
+                <a href="#">登録</a>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <a href="../index.html">ホーム</a>
+            <a href="../index.html#primary" class="active">基礎教育</a>
+            <a href="../index.html#languages">語学教育</a>
+            <a href="../index.html#it">ITとAI教育</a>
+            <a href="../index.html#about">私たちについて</a>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="breadcrumb">
+            <a href="../index.html">ホーム</a>
+            <span class="separator">&gt;</span>
+            <a href="../index.html#primary">基礎教育</a>
+            <span class="separator">&gt;</span>
+            <a href="../math.html">中学受験算数</a>
+            <span class="separator">&gt;</span>
+            <span>立体図形</span>
+        </div>
+        
+        <div class="page-header">
+            <h1 class="page-title">立体図形の性質と解法テクニック</h1>
+        </div>
+        
+        <div class="topic-nav">
+            <h3>このページの内容</h3>
+            <div class="topic-links">
+                <a href="#introduction" class="active">立体図形の基礎</a>
+                <a href="#cube-cuboid">直方体と立方体</a>
+                <a href="#cylinder">円柱と円錐</a>
+                <a href="#prism-pyramid">角柱と角錐</a>
+                <a href="#sphere">球</a>
+                <a href="#compound">複合立体</a>
+                <a href="#cross-section">断面と切断</a>
+                <a href="#net">展開図</a>
+                <a href="#practice">練習問題</a>
+            </div>
+        </div>
+        
+        <section id="introduction" class="content-section">
+            <h2>立体図形の基礎</h2>
+            <p>立体図形は中学受験算数において非常に重要な単元であり、難関校を中心に頻出のテーマです。立体図形問題では、空間把握能力や論理的思考力が問われるだけでなく、計算力も必要とされます。</p>
+            
+            <p>中学受験で出題される立体図形の主な種類は以下の通りです：</p>
+            <ul>
+                <li>直方体・立方体</li>
+                <li>円柱・円錐</li>
+                <li>角柱・角錐</li>
+                <li>球</li>
+                <li>複合立体（上記の組み合わせ）</li>
+            </ul>
+            
+            <p>立体図形を理解するうえで重要な概念は以下の3つです：</p>
+            <ol>
+                <li><strong>体積</strong>：立体の内部の大きさを表す</li>
+                <li><strong>表面積</strong>：立体の表面全体の面積</li>
+                <li><strong>展開図</strong>：立体を平面に広げた図形</li>
+            </ol>
+            
+            <div class="tip-box">
+                <h4>学習のポイント</h4>
+                <p>立体図形の問題を解くときは、まず図をしっかり描いて、与えられた条件を整理することが大切です。また、見取り図だけでなく、断面図や展開図など、様々な視点から捉える練習も重要です。</p>
+            </div>
+        </section>
+        
+        <section id="cube-cuboid" class="content-section">
+            <h2>直方体と立方体</h2>
+            <p>直方体と立方体は、中学受験の立体図形問題の基本となる図形です。</p>
+            
+            <h3>直方体の性質</h3>
+            <p>直方体は、6つの長方形で囲まれた立体で、向かい合う面は合同です。</p>
+            
+            <div class="formula-box">
+                <h4>直方体の公式</h4>
+                <div class="formula">\text{体積} = \text{縦} \times \text{横} \times \text{高さ}</div>
+                <div class="formula">\text{表面積} = 2(\text{縦} \times \text{横} + \text{横} \times \text{高さ} + \text{縦} \times \text{高さ})</div>
+                <p>※縦=$a$, 横=$b$, 高さ=$c$ とすると：表面積 = $2(ab + bc + ca)$</p>
+            </div>
+            
+            <h3>立方体の性質</h3>
+            <p>立方体は、6つの正方形で囲まれた直方体の特殊な形で、すべての辺の長さが等しくなっています。</p>
+            
+            <div class="formula-box">
+                <h4>立方体の公式</h4>
+                <div class="formula">一辺の長さを $a$ とすると：</div>
+                <div class="formula">\text{体積} = a^3</div>
+                <div class="formula">\text{表面積} = 6a^2</div>
+                <div class="formula">\text{対角線の長さ} = a\sqrt{3}</div>
+            </div>
+            
+            <div class="example-box">
+                <h4>例題：立方体の体積と表面積</h4>
+                <p>一辺の長さが4cmの立方体があります。この立方体の体積と表面積を求めなさい。</p>
+                <div class="example-solution">
+                    <p><strong>解答</strong></p>
+                    <p>体積 = 4³ = 64 cm³</p>
+                    <p>表面積 = 6 × 4² = 6 × 16 = 96 cm²</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>入試でよく出る問題パターン</h4>
+                <p>立方体や直方体の問題では、以下のようなパターンがよく出題されます：</p>
+                <ul>
+                    <li>対角線の長さに関する問題</li>
+                    <li>切断して得られる断面に関する問題</li>
+                    <li>内部に別の立体を含む問題</li>
+                    <li>水を入れる量や満たす時間に関する問題</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="cylinder" class="content-section">
+            <h2>円柱と円錐</h2>
+            <p>円柱と円錐は、底面が円形の立体図形です。これらの図形は、中学受験ではしばしば体積や表面積を計算する問題として出題されます。</p>
+            
+            <h3>円柱の性質</h3>
+            <p>円柱は、2つの合同な円形の底面とそれらを結ぶ曲面からなる立体です。</p>
+            
+            <div class="formula-box">
+                <h4>円柱の公式</h4>
+                <div class="formula">底面の半径を $r$、高さを $h$ とすると：</div>
+                <div class="formula">\text{体積} = \pi r^2 h</div>
+                <div class="formula">\text{表面積} = 2\pi r^2 + 2\pi r h \ \text{(底面積2つ + 側面積)}</div>
+                <div class="formula">\text{側面積} = 2\pi r h</div>
+            </div>
+            
+            <h3>円錐の性質</h3>
+            <p>円錐は、1つの円形の底面と頂点、そしてそれらを結ぶ曲面からなる立体です。</p>
+            
+            <div class="formula-box">
+                <h4>円錐の公式</h4>
+                <div class="formula">底面の半径を $r$、高さを $h$ とすると：</div>
+                <div class="formula">\text{体積} = \frac{1}{3}\pi r^2 h</div>
+                <div class="formula">\text{表面積} = \pi r^2 + \pi r s \ \text{(底面積 + 側面積)}</div>
+                <div class="formula">\text{側面積} = \pi r s</div>
+                <div class="formula">\text{母線の長さ} \ s = \sqrt{r^2 + h^2}</div>
+            </div>
+            
+            <div class="example-box">
+                <h4>例題：円柱と円錐の体積比較</h4>
+                <p>底面の半径が3cm、高さが4cmの円柱と、同じ底面と高さを持つ円錐があります。この円柱と円錐の体積の比を求めなさい。</p>
+                <div class="example-solution">
+                    <p><strong>解答</strong></p>
+                    <p>円柱の体積 = πr²h = π × 3² × 4 = 36π cm³</p>
+                    <p>円錐の体積 = (1/3)πr²h = (1/3) × π × 3² × 4 = 12π cm³</p>
+                    <p>体積の比 = 36π : 12π = 3 : 1</p>
+                    <p>したがって、円柱と円錐の体積の比は3:1となります。</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>覚えておきたいポイント</h4>
+                <p>円錐の体積は、同じ底面と高さを持つ円柱の体積の1/3であることを覚えておくと便利です。同様に、角錐の体積も、同じ底面と高さを持つ角柱の体積の1/3となります。</p>
+            </div>
+        </section>
+        
+        <section id="prism-pyramid" class="content-section">
+            <h2>角柱と角錐</h2>
+            <p>角柱と角錐は、底面が多角形の立体図形です。これらは円柱・円錐を一般化した図形と考えることができます。</p>
+            
+            <div class="formula-box">
+                <h4>角柱の公式</h4>
+                <div class="formula">底面積を $S$、高さを $h$ とすると：</div>
+                <div class="formula">\text{体積} = S \times h</div>
+                <div class="formula">\text{表面積} = 2S + (\text{底面の周囲長}) \times h</div>
+            </div>
+            
+            <h3>角錐の性質</h3>
+            <p>角錐は、1つの多角形の底面と1つの頂点、そしてそれらを結ぶ三角形の側面からなる立体です。</p>
+            
+            <div class="formula-box">
+                <h4>角錐の公式</h4>
+                <div class="formula">底面積を $S$、高さを $h$ とすると：</div>
+                <div class="formula">\text{体積} = \frac{1}{3} \times S \times h</div>
+                <div class="formula">\text{表面積} = S + (\text{各側面の面積の和})</div>
+            </div>
+            
+            <div class="example-box">
+                <h4>例題：三角柱の体積と表面積</h4>
+                <p>底面が一辺5cmの正三角形で、高さが8cmの三角柱があります。この三角柱の体積と表面積を求めなさい。</p>
+                <div class="example-solution">
+                    <p><strong>解答</strong></p>
+                    <p>正三角形の面積 = (√3/4) × 5² = (25√3)/4 cm²</p>
+                    <p>三角柱の体積 = 底面積 × 高さ = (25√3)/4 × 8 = 50√3 cm³</p>
+                    <p>底面の周囲長 = 5 × 3 = 15 cm</p>
+                    <p>表面積 = 2 × 底面積 + 周囲長 × 高さ = 2 × (25√3)/4 + 15 × 8 = (25√3)/2 + 120 = (25√3 + 240)/2 cm²</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="sphere" class="content-section">
+            <h2>球</h2>
+            <p>球は、1つの点（中心）から等距離にある点の集合からなる立体です。入試では球の体積や表面積の計算、他の立体との複合問題としてよく出題されます。</p>
+            
+            <div class="formula-box">
+                <h4>球の公式</h4>
+                <div class="formula">半径を $r$ とすると：</div>
+                <div class="formula">\text{体積} = \frac{4}{3}\pi r^3</div>
+                <div class="formula">\text{表面積} = 4\pi r^2</div>
+            </div>
+            
+            <div class="example-box">
+                <h4>例題：球の体積と表面積</h4>
+                <p>半径が6cmの球があります。この球の体積と表面積を求めなさい。</p>
+                <div class="example-solution">
+                    <p><strong>解答</strong></p>
+                    <p>体積 = $\frac{4}{3}\pi r^3 = \frac{4}{3}\pi \times 6^3 = \frac{4}{3}\pi \times 216 = 288\pi$ cm³</p>
+                    <p>表面積 = $4\pi r^2 = 4\pi \times 6^2 = 4\pi \times 36 = 144\pi$ cm²</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>球に関する入試問題のポイント</h4>
+                <p>球の問題では、以下のような内容がよく出題されます：</p>
+                <ul>
+                    <li>容器に入れた球の体積や表面積の計算</li>
+                    <li>球の一部（例：半球）の体積や表面積</li>
+                    <li>球と他の立体（円柱など）の組み合わせ</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="compound" class="content-section">
+            <h2>複合立体</h2>
+            <p>複合立体とは、基本的な立体が組み合わさってできる立体のことです。中学受験では、これらの立体の体積や表面積を求める問題が頻出します。</p>
+            
+            <h3>複合立体の解法のポイント</h3>
+            <ol>
+                <li><strong>分割法</strong>：複合立体を基本的な立体に分割して、それぞれの体積や表面積を求めて合計する</li>
+                <li><strong>差分法</strong>：大きな立体から小さな立体を取り除いて、残りの部分の体積や表面積を求める</li>
+            </ol>
+            
+            <div class="example-box">
+                <h4>例題：複合立体の体積</h4>
+                <p>底面が一辺10cmの正方形で、高さが12cmの直方体があります。この直方体の上面の中心から、底面に垂直に円柱を取り除きました。円柱の半径は3cmです。残った立体の体積を求めなさい。</p>
+                <div class="example-solution">
+                    <p><strong>解答</strong></p>
+                    <p>直方体の体積 = 10 × 10 × 12 = 1200 cm³</p>
+                    <p>円柱の体積 = πr²h = π × 3² × 12 = 108π cm³</p>
+                    <p>残った立体の体積 = 1200 - 108π ≈ 1200 - 339.3 ≈ 860.7 cm³</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>複合立体問題のコツ</h4>
+                <p>複合立体の問題では、図をしっかり描いて、どのように分解するか、または何を差し引くかを明確にすることが重要です。また、表面積を求める場合は、どの面が残り、どの面が消えるかを慎重に検討する必要があります。</p>
+            </div>
+        </section>
+        
+        <section id="cross-section" class="content-section">
+            <h2>断面と切断</h2>
+            <p>立体図形を平面で切断したときにできる断面の形状や面積を求める問題も、中学受験では頻出のテーマです。</p>
+            
+            <h3>主な切断パターンと断面の形</h3>
+            <ul>
+                <li><strong>立方体を対角線で切る</strong>：断面は正六角形</li>
+                <li><strong>円柱を斜めに切る</strong>：断面は楕円</li>
+                <li><strong>球を平面で切る</strong>：断面は常に円</li>
+            </ul>
+            
+            <div class="example-box">
+                <h4>例題：立方体の切断</h4>
+                <p>一辺が8cmの立方体があります。この立方体の対角線を通る平面で切ったときにできる断面の面積を求めなさい。</p>
+                <div class="example-solution">
+                    <p><strong>解答</strong></p>
+                    <p>立方体の対角線の長さ = 8√3 cm</p>
+                    <p>正六角形の面積は、正三角形6つ分の面積として計算できます。</p>
+                    <p>一辺が8cmの立方体を対角線で切ると、正六角形の面積は 8² × √2 = 64√2 cm²</p>
+                </div>
+            </div>
+            
+            <div class="tip-box">
+                <h4>断面問題のポイント</h4>
+                <p>断面問題では、切断面がどのような形になるかをイメージすることが重要です。また、切断面と立体の辺や面との交点を見つけることで、断面の形を特定できることが多いです。</p>
+            </div>
+        </section>
+        
+        <section id="net" class="content-section">
+            <h2>展開図</h2>
+            <p>展開図は、立体を切り開いて平面に広げた図形です。中学受験では、立体の展開図を描く問題や、展開図から元の立体を判断する問題がよく出題されます。</p>
+            
+            <h3>主な立体の展開図のパターン</h3>
+            <ul>
+                <li><strong>立方体</strong>：11種類の展開図が存在</li>
+                <li><strong>直方体</strong>：多様なパターンが存在</li>
+                <li><strong>円柱</strong>：長方形2枚（側面）+ 円2枚（底面）</li>
+                <li><strong>円錐</strong>：扇形1枚（側面）+ 円1枚（底面）</li>
+            </ul>
+            
+            <div class="tip-box">
+                <h4>展開図問題のコツ</h4>
+                <p>展開図の問題では、立体を頭の中でイメージして、各面がどのように接続しているかを理解することが重要です。特に、頂点や辺がどのように対応するかを注意深く考える必要があります。</p>
+                <p>また、展開図を折りたたんだときに、面と面が正しく接合されるかを確認することも大切です。</p>
+            </div>
+        </section>
+        
+        <section id="practice" class="content-section">
+            <h2>練習問題</h2>
+            <p>以下の問題を解いて、立体図形に関する理解を深めましょう。</p>
+            
+            <div class="quiz-section">
+                <h3>基本問題</h3>
+                
+                <div class="quiz-question">
+                    <p>問題1：一辺が5cmの立方体があります。この立方体の表面積と体積を求めなさい。</p>
+                    <div class="quiz-options">
+                        <p><strong>解答</strong>：表面積 = 6 × 5² = 150 cm², 体積 = 5³ = 125 cm³</p>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>問題2：底面の半径が4cm、高さが6cmの円柱があります。この円柱の体積と側面積を求めなさい。</p>
+                    <div class="quiz-options">
+                        <p><strong>解答</strong>：体積 = πr²h = π × 4² × 6 = 96π cm³, 側面積 = 2πrh = 2π × 4 × 6 = 48π cm²</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-section">
+                <h3>応用問題</h3>
+                
+                <div class="quiz-question">
+                    <p>問題3：底面が一辺8cmの正方形である直方体の中に、底面に接する球が入っています。球の直径は底面の対角線の長さと同じです。球の体積を求めなさい。</p>
+                    <div class="quiz-options">
+                        <p><strong>解答</strong>：底面の対角線 = 8√2 cm, 球の直径 = 8√2 cm, 球の半径 = 4√2 cm<br>
+                        球の体積 = (4/3)πr³ = (4/3)π × (4√2)³ = (4/3)π × 64 × 2√2 = (512√2)π/3 cm³</p>
+                    </div>
+                </div>
+                
+                <div class="quiz-question">
+                    <p>問題4：半径10cmの球から、中心を通る平面で球を切断し、小さい方の部分を取り除きました。切断面から球の中心までの距離が6cmのとき、残った部分の体積を求めなさい。</p>
+                    <div class="quiz-options">
+                        <p><strong>解答</strong>：球の全体積 = (4/3)π × 10³ = (4000π/3) cm³<br>
+                        取り除いた部分の高さ = 10 - 6 = 4 cm<br>
+                        取り除いた部分の体積 = (1/3)πh²(3r-h) = (1/3)π × 4² × (3×10-4) = (1/3)π × 16 × 26 = (416π/3) cm³<br>
+                        残った部分の体積 = (4000π/3) - (416π/3) = (3584π/3) cm³</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="cta-section">
+            <h2>立体図形を完全マスター</h2>
+            <p>中学受験算数の立体図形の問題を確実に解けるようになるには、基本的な公式を理解し、様々なパターンの問題を解く練習が欠かせません。知行教育では、入試レベルの問題に対応できる力を養うための詳細な解説とステップアップ式の練習問題を提供しています。</p>
+            <a href="../math.html" class="cta-button">他の算数トピックを学ぶ</a>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>知行教育について</h3>
+                <p>知行教育は2025年に設立された非営利教育リソース共有プラットフォームで、質の高い総合的な学習リソースの提供に努めています。様々な学習資料を共有し、自主学習とスマート教育をサポートしています。</p>
+            </div>
+            <div class="footer-column">
+                <h3>学習リソース</h3>
+                <ul>
+                    <li><a href="../index.html#primary">基礎教育</a></li>
+                    <li><a href="../index.html#languages">語学学習リソース</a></li>
+                    <li><a href="../index.html#it">ITとAI学習リソース</a></li>
+                    <li><a href="#">学習ツールダウンロード</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>ヘルプセンター</h3>
+                <ul>
+                    <li><a href="#">利用ガイド</a></li>
+                    <li><a href="#">よくある質問</a></li>
+                    <li><a href="#">リソースフィードバック</a></li>
+                    <li><a href="#">学習アドバイス</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>お問い合わせ</h3>
+                <p>ご質問やご提案がございましたら、以下の方法でお問い合わせください：</p>
+                <p>Eメール：contact@zhixing-edu.com</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 知行教育 | 教育リソース共有プラットフォーム | 最終更新：2025年4月27日</p>
+        </div>
+    </footer>
+</body>
+</html>
