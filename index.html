@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知行教育 - 全面的在线学习平台</title>
+    <title>知行教育 - 在线学习资源平台</title>
     <style>
         * {
             margin: 0;
@@ -14,241 +14,592 @@
         body {
             line-height: 1.6;
             color: #333;
-            background-color: #f9f9f9;
+            background-color: #f5f5f5;
         }
-        header {
-            background-color: #3498db;
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        a {
+            text-decoration: none;
+            color: inherit;
         }
-        nav {
-            background-color: #2980b9;
-            padding: 0.5rem 0;
+        /* Header styles */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        nav ul {
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            border-bottom: 1px solid #eee;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo h1 {
+            font-size: 24px;
+            color: #2185d0;
+            margin-left: 10px;
+        }
+        .search-bar {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 30px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .user-actions a {
+            margin-left: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        .user-actions a:hover {
+            color: #2185d0;
+        }
+        .main-nav {
             display: flex;
             justify-content: center;
-            list-style: none;
+            padding: 15px 0;
         }
-        nav ul li {
-            margin: 0 1rem;
+        .main-nav a {
+            margin: 0 25px;
+            font-size: 16px;
+            color: #333;
+            position: relative;
         }
-        nav ul li a {
+        .main-nav a.active, .main-nav a:hover {
+            color: #2185d0;
+        }
+        .main-nav a.active:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #2185d0;
+        }
+
+        /* Banner styles */
+        .banner {
+            height: 400px;
+            background-image: linear-gradient(135deg, #2185d0, #7057f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        nav ul li a:hover {
-            color: #ecf0f1;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-        .hero {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 30px;
         }
-        .hero h2 {
-            font-size: 2rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
-        .hero p {
-            font-size: 1.1rem;
-            color: #7f8c8d;
+        .banner-content {
             max-width: 800px;
-            margin: 0 auto;
+            padding: 0 20px;
         }
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+        .banner h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
         }
-        .category {
-            background-color: white;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+        .banner p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
         }
-        .category:hover {
-            transform: translateY(-5px);
-        }
-        .category h3 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 0.5rem;
-        }
-        .category ul {
-            list-style-position: inside;
-            margin-top: 1rem;
-        }
-        .category li {
-            margin-bottom: 0.5rem;
-        }
-        .cta {
-            text-align: center;
-            background-color: #e74c3c;
-            color: white;
-            padding: 3rem 2rem;
-            border-radius: 8px;
-            margin-bottom: 3rem;
-        }
-        .cta h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-        .cta-button {
+        .btn {
             display: inline-block;
+            padding: 12px 30px;
             background-color: white;
-            color: #e74c3c;
-            padding: 0.8rem 2rem;
+            color: #2185d0;
             border-radius: 30px;
-            text-decoration: none;
             font-weight: bold;
-            margin-top: 1rem;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: transform 0.2s;
         }
-        .cta-button:hover {
-            background-color: #f8f9fa;
-            transform: scale(1.05);
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
+        /* Main content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px;
+        }
+        .section-title {
+            font-size: 24px;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-title a {
+            font-size: 14px;
+            color: #666;
+        }
+        .section-title a:hover {
+            color: #2185d0;
+        }
+
+        /* Course cards */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .course-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .course-image {
+            height: 160px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+        }
+        .course-content {
+            padding: 15px;
+        }
+        .course-category {
+            font-size: 12px;
+            color: #2185d0;
+            margin-bottom: 5px;
+        }
+        .course-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            height: 44px;
+            overflow: hidden;
+        }
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+        }
+        .tag-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: #f0f8ff;
+            color: #2185d0;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        /* Features section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+            text-align: center;
+        }
+        .feature-card {
+            padding: 30px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .feature-card img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #2185d0;
+        }
+
+        /* Footer */
         footer {
             background-color: #2c3e50;
             color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
+            padding: 50px 0 20px;
         }
-        .footer-links {
-            display: flex;
-            justify-content: center;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 0 20px;
+        }
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .footer-column ul {
             list-style: none;
-            margin: 1rem 0;
         }
-        .footer-links li {
-            margin: 0 1rem;
+        .footer-column li {
+            margin-bottom: 10px;
         }
-        .footer-links a {
+        .footer-column a {
             color: #bdc3c7;
-            text-decoration: none;
+            transition: color 0.2s;
         }
-        .footer-links a:hover {
+        .footer-column a:hover {
             color: white;
         }
         .copyright {
-            font-size: 0.9rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
             color: #95a5a6;
+            font-size: 14px;
         }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            nav ul {
+            .header-top {
                 flex-direction: column;
-                align-items: center;
+                padding: 15px;
             }
-            nav ul li {
-                margin: 0.5rem 0;
+            .search-bar {
+                margin: 15px 0;
+                max-width: 100%;
             }
-            .categories {
+            .main-nav {
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 15px;
+            }
+            .banner {
+                height: 300px;
+            }
+            .banner h2 {
+                font-size: 28px;
+            }
+            .footer-content {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>知行教育</h1>
-        <p>知识与实践并行，成就未来精英</p>
-    </header>
-    
-    <nav>
-        <ul>
-            <li><a href="#primary">基础教育</a></li>
-            <li><a href="#languages">语言教育</a></li>
-            <li><a href="#it">IT与AI教育</a></li>
-            <li><a href="#about">关于我们</a></li>
-            <li><a href="#contact">联系方式</a></li>
-        </ul>
-    </nav>
-    
-    <div class="container">
-        <section class="hero">
-            <h2>全面的教育资源，助力学生成长</h2>
-            <p>知行教育平台为学生提供从小学到高中的各科目基础教育、多语言学习以及现代IT技能培训，打造全方位发展的优质学习环境。</p>
-        </section>
-        
-        <div class="categories">
-            <div id="primary" class="category">
-                <h3>基础教育</h3>
-                <p>涵盖小学到高中的全科目教育资源，夯实学生知识基础。</p>
-                <ul>
-                    <li>数学 - 从基础计算到高等数学</li>
-                    <li>语文 - 阅读理解、写作与文学欣赏</li>
-                    <li>英语 - 听说读写全方位训练</li>
-                    <li>科学 - 物理、化学、生物综合学习</li>
-                    <li>历史与地理 - 拓展学生视野</li>
-                </ul>
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">
+                <h1>知行教育</h1>
             </div>
-            
-            <div id="languages" class="category">
-                <h3>语言教育</h3>
-                <p>专注多语言能力培养，提升学生国际竞争力。</p>
-                <ul>
-                    <li>中文 - 母语能力提升与文化传承</li>
-                    <li>英语 - 国际通用语言能力培养</li>
-                    <li>日语 - 了解日本文化，掌握实用日语</li>
-                    <li>语言交流活动 - 实践中提高语言应用能力</li>
-                    <li>跨文化交流 - 培养国际视野</li>
-                </ul>
+            <div class="search-bar">
+                <input type="text" placeholder="搜索课程、资源...">
             </div>
-            
-            <div id="it" class="category">
-                <h3>IT与AI教育</h3>
-                <p>紧跟科技前沿，培养学生未来核心竞争力。</p>
-                <ul>
-                    <li>编程基础 - Python、JavaScript入门</li>
-                    <li>人工智能概念与应用</li>
-                    <li>数据分析与可视化</li>
-                    <li>网页设计与开发</li>
-                    <li>算法思维与问题解决</li>
-                </ul>
+            <div class="user-actions">
+                <a href="#">登录</a>
+                <a href="#">注册</a>
             </div>
         </div>
-        
-        <section class="cta">
-            <h3>开始您的学习之旅</h3>
-            <p>无论您是想提升基础学科能力，掌握新语言，还是探索现代IT技能，知行教育都能为您提供专业的学习支持。</p>
-            <a href="#contact" class="cta-button">立即咨询</a>
+        <nav class="main-nav">
+            <a href="#" class="active">首页</a>
+            <a href="#primary">基础教育</a>
+            <a href="#languages">语言教育</a>
+            <a href="#it">IT与AI教育</a>
+            <a href="#about">关于我们</a>
+        </nav>
+    </header>
+
+    <section class="banner">
+        <div class="banner-content">
+            <h2>教育资源共享与智能教育平台</h2>
+            <p>知行教育平台提供丰富的学习资源，支持自主学习与智能教育。</p>
+            <a href="#courses" class="btn">探索课程</a>
+        </div>
+    </section>
+
+    <div class="main-content" id="courses">
+        <h2 class="section-title" id="primary">
+            基础教育
+            <a href="#">查看全部 &gt;</a>
+        </h2>
+        <div class="course-grid">
+            <a href="juken.html" class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=中学受験')"></div>
+                <div class="course-content">
+                    <div class="course-category">升学备考</div>
+                    <h3 class="course-title">日本中学入学考试（中学受験）</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">备考资料</span>
+                        <span class="tag-pill">考试指南</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>10个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </a>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=算数')"></div>
+                <div class="course-content">
+                    <div class="course-category">算数</div>
+                    <h3 class="course-title">算数 - 计算与应用题</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">计算练习</span>
+                        <span class="tag-pill">文章题</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>18个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <a href="science.html" class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=理科')"></div>
+                <div class="course-content">
+                    <div class="course-category">理科</div>
+                    <h3 class="course-title">理科 - 物理、化学、生物、地学</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">实验资料</span>
+                        <span class="tag-pill">知识点</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>22个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </a>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=社会')"></div>
+                <div class="course-content">
+                    <div class="course-category">社会</div>
+                    <h3 class="course-title">社会 - 历史、地理、公民</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">日本历史</span>
+                        <span class="tag-pill">世界地理</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>20个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=国語')"></div>
+                <div class="course-content">
+                    <div class="course-category">国語</div>
+                    <h3 class="course-title">国語 - 阅读理解与表达</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">现代文</span>
+                        <span class="tag-pill">古文</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>25个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" id="languages">
+            语言教育
+            <a href="#">查看全部 &gt;</a>
+        </h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=英语学习')"></div>
+                <div class="course-content">
+                    <div class="course-category">语言学习</div>
+                    <h3 class="course-title">英语 - 听说读写全方位训练</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">听力材料</span>
+                        <span class="tag-pill">口语练习</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>30个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=日语学习')"></div>
+                <div class="course-content">
+                    <div class="course-category">语言学习</div>
+                    <h3 class="course-title">日语 - 从零开始的日语学习</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">发音入门</span>
+                        <span class="tag-pill">基础语法</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>20个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=中文学习')"></div>
+                <div class="course-content">
+                    <div class="course-category">语言学习</div>
+                    <h3 class="course-title">中文 - 母语能力提升与文化传承</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">阅读材料</span>
+                        <span class="tag-pill">写作指导</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>15个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=跨文化交流')"></div>
+                <div class="course-content">
+                    <div class="course-category">文化学习</div>
+                    <h3 class="course-title">跨文化交流 - 培养国际视野</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">文化介绍</span>
+                        <span class="tag-pill">案例分析</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>12个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" id="it">
+            IT与AI教育
+            <a href="#">查看全部 &gt;</a>
+        </h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=Python编程')"></div>
+                <div class="course-content">
+                    <div class="course-category">编程学习</div>
+                    <h3 class="course-title">Python编程基础</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">入门教程</span>
+                        <span class="tag-pill">练习项目</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>28个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=人工智能')"></div>
+                <div class="course-content">
+                    <div class="course-category">AI学习</div>
+                    <h3 class="course-title">人工智能概念与应用</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">概念解析</span>
+                        <span class="tag-pill">案例研究</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>15个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=数据分析')"></div>
+                <div class="course-content">
+                    <div class="course-category">数据科学</div>
+                    <h3 class="course-title">数据分析与可视化</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">分析工具</span>
+                        <span class="tag-pill">实战案例</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>20个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-image" style="background-image: url('https://via.placeholder.com/300x160?text=网页设计')"></div>
+                <div class="course-content">
+                    <div class="course-category">Web开发</div>
+                    <h3 class="course-title">网页设计与开发</h3>
+                    <div class="course-tags">
+                        <span class="tag-pill">HTML/CSS</span>
+                        <span class="tag-pill">JavaScript</span>
+                    </div>
+                    <div class="course-stats">
+                        <span>18个学习资源</span>
+                        <span>2025年更新</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="features">
+            <div class="feature-card">
+                <img src="https://via.placeholder.com/60x60?text=资源" alt="丰富资源">
+                <h3>丰富的学习资源</h3>
+                <p>提供各学科全面的学习材料，支持自主学习</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://via.placeholder.com/60x60?text=智能" alt="智能学习">
+                <h3>智能学习系统</h3>
+                <p>根据个人学习需求推荐合适的学习资源</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://via.placeholder.com/60x60?text=更新" alt="定期更新">
+                <h3>定期更新内容</h3>
+                <p>持续更新学习资源，保持内容的时效性</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://via.placeholder.com/60x60?text=免费" alt="免费资源">
+                <h3>免费资源分享</h3>
+                <p>大部分学习资源免费分享，促进教育平等</p>
+            </div>
         </section>
     </div>
-    
+
     <footer>
-        <div id="about">
-            <h3>关于知行教育</h3>
-            <p>知行教育成立于2025年，致力于为学生提供优质、全面的教育资源，助力每一位学习者实现自身价值。</p>
+        <div class="footer-content">
+            <div class="footer-column" id="about">
+                <h3>关于知行教育</h3>
+                <p>知行教育建立于2025年，是一个非营利性的教育资源共享平台，致力于提供优质、全面的学习资源。我们分享各类学习资料，支持智能化自主学习。</p>
+            </div>
+            <div class="footer-column">
+                <h3>学习资源</h3>
+                <ul>
+                    <li><a href="#primary">基础教育资源</a></li>
+                    <li><a href="#languages">语言学习资源</a></li>
+                    <li><a href="#it">IT与AI学习资源</a></li>
+                    <li><a href="#">学习工具下载</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>帮助中心</h3>
+                <ul>
+                    <li><a href="#">使用指南</a></li>
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">资源反馈</a></li>
+                    <li><a href="#">学习建议</a></li>
+                </ul>
+            </div>
+            <div class="footer-column" id="contact">
+                <h3>联系我们</h3>
+                <p>有任何问题或建议，请通过以下方式联系我们：</p>
+                <p>电子邮件：contact@zhixing-edu.com</p>
+            </div>
         </div>
-        
-        <ul class="footer-links">
-            <li><a href="#primary">基础教育</a></li>
-            <li><a href="#languages">语言教育</a></li>
-            <li><a href="#it">IT与AI教育</a></li>
-        </ul>
-        
-        <div id="contact">
-            <h3>联系我们</h3>
-            <p>电子邮件：contact@zhixing-edu.com</p>
-        </div>
-        
         <div class="copyright">
-            <p>&copy; 2025 知行教育. 保留所有权利。</p>
-            <p>最后更新：2025年4月27日</p>
+            <p>&copy; 2025 知行教育 | 教育资源共享平台 | 最后更新：2025年4月27日</p>
         </div>
     </footer>
 </body>
