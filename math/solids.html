@@ -4,9 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>立体図形の性質と解法テクニック - 知行教育</title>
-    <!-- MathJax の読み込み -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- MathJax の読み込み - with fallback -->
+    <script>
+        // Polyfill fallback mechanism
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if MathJax failed to load
+            setTimeout(function() {
+                if (!window.MathJax) {
+                    console.log('MathJax failed to load. Loading from alternative CDN...');
+                    // Load MathJax from alternative CDN
+                    var script = document.createElement('script');
+                    script.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+                    script.async = true;
+                    document.head.appendChild(script);
+                }
+            }, 2000);
+        });
+    </script>
+    <!-- Use cdnjs instead of polyfill.io -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.6/es6-shim.min.js"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- p5.js ライブラリの読み込み -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -402,6 +421,41 @@
                 padding: 20px;
             }
         }
+        
+        /* p5.jsキャンバス用のスタイル */
+        .p5-canvas-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .p5-controls {
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .p5-controls button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            background-color: #2185d0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .p5-controls button:hover {
+            background-color: #1678c2;
+        }
+        
+        .p5-explanation {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -765,41 +819,988 @@
             <p>中学受験算数の立体図形の問題を確実に解けるようになるには、基本的な公式を理解し、様々なパターンの問題を解く練習が欠かせません。知行教育では、入試レベルの問題に対応できる力を養うための詳細な解説とステップアップ式の練習問題を提供しています。</p>
             <a href="../math.html" class="cta-button">他の算数トピックを学ぶ</a>
         </section>
+        
+        <section id="p5-demo" class="content-section">
+            <h2>立体図形の視覚的デモ</h2>
+            <p>以下のインタラクティブデモを使って、立体図形の性質と問題の解法を視覚的に理解しましょう。ボタンをクリックして異なる立体や問題例に切り替えることができます。</p>
+            
+            <div class="p5-controls">
+                <button onclick="switchShape('cube')">立方体</button>
+                <button onclick="switchShape('prism')">三角柱</button>
+                <button onclick="switchShape('cylinder')">円柱</button>
+                <button onclick="switchShape('pyramid')">四角錐</button>
+                <button onclick="switchShape('complex')">複合立体</button>
+                <button onclick="switchShape('section')">立体の切断</button>
+            </div>
+            
+            <div class="p5-canvas-container">
+                <div id="p5-canvas"></div>
+            </div>
+            
+            <div class="p5-explanation" id="shape-explanation">
+                <h3>立方体の性質</h3>
+                <p>立方体は6つの正方形で囲まれた立体図形です。一辺の長さを a とすると：</p>
+                <ul>
+                    <li>体積 = a³</li>
+                    <li>表面積 = 6a²</li>
+                    <li>対角線の長さ = a√3</li>
+                </ul>
+                <div class="example-box">
+                    <h4>例題：立方体の切断</h4>
+                    <p>一辺が6cmの立方体の対角線を通る平面で切断します。できる断面の形と面積を求めなさい。</p>
+                    <div class="example-solution">
+                        <p><strong>解答</strong></p>
+                        <p>立方体の対角線を通る平面で切ると、断面は正六角形になります。</p>
+                        <p>この正六角形の面積は = 6² × √2 = 36√2 ≈ 50.91 cm²</p>
+                        <p>右のデモで「立体の切断」を選び、立方体の対角線による切断面をご確認ください。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="interactive-demos" class="content-section">
+            <h2>立体図形の問題解法 - インタラクティブデモ</h2>
+            <p>以下の3Dデモを使って、立体図形の問題とその解法を視覚的に学ぶことができます。マウスでドラッグして図形を回転させることができます。</p>
+            
+            <div class="p5-controls">
+                <button id="cube-btn" class="shape-btn active">立方体の問題</button>
+                <button id="cylinder-btn" class="shape-btn">円柱の問題</button>
+                <button id="pyramid-btn" class="shape-btn">四角錐の問題</button>
+                <button id="compound-btn" class="shape-btn">複合立体の問題</button>
+            </div>
+            
+            <div class="p5-canvas-container">
+                <div id="p5-canvas"></div>
+            </div>
+            
+            <div class="p5-explanation" id="shape-explanation">
+                <h3>立方体の体積と表面積の関係</h3>
+                <p id="problem-text">問題：一辺の長さが6cmの立方体があります。この立方体の対角線の長さと、ある頂点から最も遠い頂点までの距離を求めなさい。</p>
+                <div id="solution-text">
+                    <p><strong>解法:</strong></p>
+                    <p>立方体の対角線の長さは、三平方の定理を使って計算できます。</p>
+                    <p>底面の対角線の長さは、$\sqrt{a^2 + a^2} = a\sqrt{2}$ となります（aは一辺の長さ）。</p>
+                    <p>この底面の対角線と高さaを使って、立方体の対角線の長さを計算すると：</p>
+                    <p>$\sqrt{(a\sqrt{2})^2 + a^2} = \sqrt{2a^2 + a^2} = \sqrt{3a^2} = a\sqrt{3}$</p>
+                    <p>したがって、一辺の長さが6cmの立方体の対角線の長さは、$6\sqrt{3} \approx 10.4$ cmとなります。</p>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            let currentShape = 'cube';
+            let angle = 0;
+            let rotX = 0;
+            let rotY = 0;
+            
+            // p5.jsのスケッチ設定
+            const sketch = (p) => {
+                p.setup = function() {
+                    // キャンバスの作成
+                    let canvas = p.createCanvas(500, 400, p.WEBGL);
+                    canvas.parent('p5-canvas');
+                    p.angleMode(p.RADIANS);
+                    
+                    // シェーディング設定
+                    p.normalMaterial();
+                };
+                
+                p.draw = function() {
+                    p.background(240);
+                    p.ambientLight(60, 60, 60);
+                    p.pointLight(255, 255, 255, 0, 0, 200);
+                    
+                    // マウスでの回転
+                    if (p.mouseIsPressed && p.mouseButton === p.LEFT) {
+                        rotY += (p.mouseX - p.pmouseX) * 0.01;
+                        rotX += (p.mouseY - p.pmouseY) * 0.01;
+                    }
+                    
+                    // 常に少し回転
+                    angle += 0.005;
+                    
+                    p.push();
+                    p.rotateX(rotX);
+                    p.rotateY(rotY);
+                    
+                    // 選択された形状によってレンダリング
+                    switch(currentShape) {
+                        case 'cube':
+                            drawCubeProblem(p);
+                            break;
+                        case 'cylinder':
+                            drawCylinderProblem(p);
+                            break;
+                        case 'pyramid':
+                            drawPyramidProblem(p);
+                            break;
+                        case 'compound':
+                            drawCompoundProblem(p);
+                            break;
+                    }
+                    
+                    p.pop();
+                };
+            };
+            
+            // 立方体の問題描画
+            function drawCubeProblem(p) {
+                p.push();
+                
+                // 立方体を描画
+                p.stroke(0);
+                p.strokeWeight(1);
+                p.fill(173, 216, 230, 200); // 薄い青
+                p.box(100);
+                
+                // 対角線を描画
+                p.strokeWeight(2);
+                p.stroke(255, 0, 0);
+                p.line(-50, -50, -50, 50, 50, 50);
+                
+                p.pop();
+            }
+            
+            // 円柱の問題描画
+            function drawCylinderProblem(p) {
+                p.push();
+                
+                p.stroke(0);
+                p.strokeWeight(1);
+                p.fill(144, 238, 144, 200); // 薄い緑
+                
+                // 円柱の高さと半径
+                let h = 120;
+                let r = 50;
+                
+                // 円柱を描画
+                p.push();
+                p.rotateX(p.PI/2);
+                p.cylinder(r, h);
+                p.pop();
+                
+                // 中心線を描画
+                p.strokeWeight(2);
+                p.stroke(255, 0, 0);
+                p.line(0, -h/2, 0, 0, h/2, 0);
+                
+                // 半径を示す線を描画
+                p.stroke(0, 0, 255);
+                p.line(0, -h/2, 0, r, -h/2, 0);
+                
+                p.pop();
+                
+                // 問題と解法のテキスト更新
+                document.getElementById('shape-explanation').innerHTML = `
+                    <h3>円柱の体積と表面積の計算</h3>
+                    <p id="problem-text">問題：半径が5cm、高さが12cmの円柱があります。この円柱の表面積と体積を求めなさい。</p>
+                    <div id="solution-text">
+                        <p><strong>解法:</strong></p>
+                        <p>円柱の表面積は、上下の底面（円）の面積と側面の面積の和で求められます。</p>
+                        <p>底面の面積（1つ）: $\\pi r^2 = \\pi \\times 5^2 = 25\\pi$ cm²</p>
+                        <p>側面の面積: $2\\pi r h = 2\\pi \\times 5 \\times 12 = 120\\pi$ cm²</p>
+                        <p>よって、表面積 = $2 \\times 25\\pi + 120\\pi = 50\\pi + 120\\pi = 170\\pi$ cm²</p>
+                        <p>円柱の体積は、底面積 × 高さで求められます：</p>
+                        <p>体積 = $\\pi r^2 h = \\pi \\times 5^2 \\times 12 = 25\\pi \\times 12 = 300\\pi$ cm³</p>
+                    </div>
+                `;
+            }
+            
+            // 四角錐の問題描画
+            function drawPyramidProblem(p) {
+                p.push();
+                
+                // 底面の四角形のサイズ
+                let baseSize = 80;
+                // 高さ
+                let pyramidHeight = 120;
+                
+                p.stroke(0);
+                p.strokeWeight(1);
+                p.fill(255, 182, 193, 200); // 薄いピンク
+                
+                // 四角錐を描画
+                p.translate(0, 20, 0); // 少し下に移動
+                
+                // 底面の四角形
+                p.push();
+                p.translate(0, pyramidHeight/2, 0);
+                p.rotateX(p.PI/2);
+                p.rect(-baseSize/2, -baseSize/2, baseSize, baseSize);
+                p.pop();
+                
+                // 四角錐の側面（4つの三角形）
+                let vertices = [
+                    [-baseSize/2, pyramidHeight/2, -baseSize/2], // 底面の頂点1
+                    [baseSize/2, pyramidHeight/2, -baseSize/2],  // 底面の頂点2
+                    [baseSize/2, pyramidHeight/2, baseSize/2],   // 底面の頂点3
+                    [-baseSize/2, pyramidHeight/2, baseSize/2],  // 底面の頂点4
+                    [0, -pyramidHeight/2, 0]                     // 四角錐の頂点
+                ];
+                
+                // 側面1
+                p.beginShape();
+                p.vertex(...vertices[0]);
+                p.vertex(...vertices[1]);
+                p.vertex(...vertices[4]);
+                p.endShape(p.CLOSE);
+                
+                // 側面2
+                p.beginShape();
+                p.vertex(...vertices[1]);
+                p.vertex(...vertices[2]);
+                p.vertex(...vertices[4]);
+                p.endShape(p.CLOSE);
+                
+                // 側面3
+                p.beginShape();
+                p.vertex(...vertices[2]);
+                p.vertex(...vertices[3]);
+                p.vertex(...vertices[4]);
+                p.endShape(p.CLOSE);
+                
+                // 側面4
+                p.beginShape();
+                p.vertex(...vertices[3]);
+                p.vertex(...vertices[0]);
+                p.vertex(...vertices[4]);
+                p.endShape(p.CLOSE);
+                
+                // 高さを示す線
+                p.strokeWeight(2);
+                p.stroke(255, 0, 0);
+                p.line(0, -pyramidHeight/2, 0, 0, pyramidHeight/2, 0);
+                
+                p.pop();
+                
+                // 問題と解法のテキスト更新
+                document.getElementById('shape-explanation').innerHTML = `
+                    <h3>四角錐の体積計算</h3>
+                    <p id="problem-text">問題：底面が一辺8cmの正方形で、高さが12cmの四角錐があります。この四角錐の体積と、頂点から底面までの最短距離を求めなさい。</p>
+                    <div id="solution-text">
+                        <p><strong>解法:</strong></p>
+                        <p>四角錐の体積は、底面積 × 高さ ÷ 3 で求められます。</p>
+                        <p>底面積 = $8^2 = 64$ cm²</p>
+                        <p>体積 = $\\frac{1}{3} \\times 64 \\times 12 = \\frac{64 \\times 12}{3} = \\frac{768}{3} = 256$ cm³</p>
+                        <p>頂点から底面までの最短距離は高さそのものなので、12cmとなります。</p>
+                    </div>
+                `;
+            }
+            
+            // 複合立体の問題描画
+            function drawCompoundProblem(p) {
+                p.push();
+                
+                p.stroke(0);
+                p.strokeWeight(1);
+                
+                // 円柱
+                p.push();
+                p.fill(173, 216, 230, 200); // 薄い青
+                p.translate(0, -25, 0);
+                p.rotateX(p.PI/2);
+                p.cylinder(40, 50);
+                p.pop();
+                
+                // 円錐
+                p.push();
+                p.fill(255, 182, 193, 200); // 薄いピンク
+                p.translate(0, 40, 0);
+                p.rotateX(p.PI);
+                p.cone(40, 80);
+                p.pop();
+                
+                // 中心線
+                p.strokeWeight(2);
+                p.stroke(255, 0, 0);
+                p.line(0, -50, 0, 0, 80, 0);
+                
+                p.pop();
+                
+                // 問題と解法のテキスト更新
+                document.getElementById('shape-explanation').innerHTML = `
+                    <h3>複合立体の体積計算</h3>
+                    <p id="problem-text">問題：円柱の上に円錐が乗っている複合立体があります。円柱の半径は4cm、高さは5cm、円錐の底面は円柱の上面と一致し、円錐の高さは8cmです。この複合立体の体積を求めなさい。</p>
+                    <div id="solution-text">
+                        <p><strong>解法:</strong></p>
+                        <p>この複合立体の体積は、円柱の体積と円錐の体積の和で求められます。</p>
+                        <p>円柱の体積 = $\\pi r^2 h = \\pi \\times 4^2 \\times 5 = 16\\pi \\times 5 = 80\\pi$ cm³</p>
+                        <p>円錐の体積 = $\\frac{1}{3} \\pi r^2 h = \\frac{1}{3} \\times \\pi \\times 4^2 \\times 8 = \\frac{16\\pi \\times 8}{3} = \\frac{128\\pi}{3}$ cm³</p>
+                        <p>よって、複合立体の体積 = $80\\pi + \\frac{128\\pi}{3} = \\frac{240\\pi + 128\\pi}{3} = \\frac{368\\pi}{3}$ cm³</p>
+                    </div>
+                `;
+            }
+            
+            // 新しいp5インスタンスを作成
+            new p5(sketch);
+            
+            // ボタンクリックイベントの設定
+            document.addEventListener('DOMContentLoaded', function() {
+                // 形状ボタンの取得
+                const cubeBtn = document.getElementById('cube-btn');
+                const cylinderBtn = document.getElementById('cylinder-btn');
+                const pyramidBtn = document.getElementById('pyramid-btn');
+                const compoundBtn = document.getElementById('compound-btn');
+                
+                // デフォルトの問題テキスト
+                document.getElementById('shape-explanation').innerHTML = `
+                    <h3>立方体の対角線の長さ</h3>
+                    <p id="problem-text">問題：一辺の長さが6cmの立方体があります。この立方体の対角線の長さと、ある頂点から最も遠い頂点までの距離を求めなさい。</p>
+                    <div id="solution-text">
+                        <p><strong>解法:</strong></p>
+                        <p>立方体の対角線の長さは、三平方の定理を使って計算できます。</p>
+                        <p>底面の対角線の長さは、$\\sqrt{a^2 + a^2} = a\\sqrt{2}$ となります（aは一辺の長さ）。</p>
+                        <p>この底面の対角線と高さaを使って、立方体の対角線の長さを計算すると：</p>
+                        <p>$\\sqrt{(a\\sqrt{2})^2 + a^2} = \\sqrt{2a^2 + a^2} = \\sqrt{3a^2} = a\\sqrt{3}$</p>
+                        <p>したがって、一辺の長さが6cmの立方体の対角線の長さは、$6\\sqrt{3} \\approx 10.4$ cmとなります。</p>
+                        <p>ある頂点から最も遠い頂点までの距離は、立方体の対角線の長さと同じなので、$6\\sqrt{3}$ cmです。</p>
+                    </div>
+                `;
+                
+                // ボタンクリックイベント
+                cubeBtn.addEventListener('click', function() {
+                    currentShape = 'cube';
+                    setActiveButton(this);
+                    
+                    // キューブ問題のテキスト更新
+                    document.getElementById('shape-explanation').innerHTML = `
+                        <h3>立方体の対角線の長さ</h3>
+                        <p id="problem-text">問題：一辺の長さが6cmの立方体があります。この立方体の対角線の長さと、ある頂点から最も遠い頂点までの距離を求めなさい。</p>
+                        <div id="solution-text">
+                            <p><strong>解法:</strong></p>
+                            <p>立方体の対角線の長さは、三平方の定理を使って計算できます。</p>
+                            <p>底面の対角線の長さは、$\\sqrt{a^2 + a^2} = a\\sqrt{2}$ となります（aは一辺の長さ）。</p>
+                            <p>この底面の対角線と高さaを使って、立方体の対角線の長さを計算すると：</p>
+                            <p>$\\sqrt{(a\\sqrt{2})^2 + a^2} = \\sqrt{2a^2 + a^2} = \\sqrt{3a^2} = a\\sqrt{3}$</p>
+                            <p>したがって、一辺の長さが6cmの立方体の対角線の長さは、$6\\sqrt{3} \\approx 10.4$ cmとなります。</p>
+                            <p>ある頂点から最も遠い頂点までの距離は、立方体の対角線の長さと同じなので、$6\\sqrt{3}$ cmです。</p>
+                        </div>
+                    `;
+                });
+                
+                cylinderBtn.addEventListener('click', function() {
+                    currentShape = 'cylinder';
+                    setActiveButton(this);
+                    
+                    // 円柱問題のテキスト更新
+                    document.getElementById('shape-explanation').innerHTML = `
+                        <h3>円柱の体積と表面積の計算</h3>
+                        <p id="problem-text">問題：半径が5cm、高さが12cmの円柱があります。この円柱の表面積と体積を求めなさい。</p>
+                        <div id="solution-text">
+                            <p><strong>解法:</strong></p>
+                            <p>円柱の表面積は、上下の底面（円）の面積と側面の面積の和で求められます。</p>
+                            <p>底面の面積（1つ）: $\\pi r^2 = \\pi \\times 5^2 = 25\\pi$ cm²</p>
+                            <p>側面の面積: $2\\pi r h = 2\\pi \\times 5 \\times 12 = 120\\pi$ cm²</p>
+                            <p>よって、表面積 = $2 \\times 25\\pi + 120\\pi = 50\\pi + 120\\pi = 170\\pi$ cm²</p>
+                            <p>円柱の体積は、底面積 × 高さで求められます：</p>
+                            <p>体積 = $\\pi r^2 h = \\pi \\times 5^2 \\times 12 = 25\\pi \\times 12 = 300\\pi$ cm³</p>
+                        </div>
+                    `;
+                });
+                
+                pyramidBtn.addEventListener('click', function() {
+                    currentShape = 'pyramid';
+                    setActiveButton(this);
+                    
+                    // 四角錐問題のテキスト更新
+                    document.getElementById('shape-explanation').innerHTML = `
+                        <h3>四角錐の体積計算</h3>
+                        <p id="problem-text">問題：底面が一辺8cmの正方形で、高さが12cmの四角錐があります。この四角錐の体積と、頂点から底面までの最短距離を求めなさい。</p>
+                        <div id="solution-text">
+                            <p><strong>解法:</strong></p>
+                            <p>四角錐の体積は、底面積 × 高さ ÷ 3 で求められます。</p>
+                            <p>底面積 = $8^2 = 64$ cm²</p>
+                            <p>体積 = $\\frac{1}{3} \\times 64 \\times 12 = \\frac{64 \\times 12}{3} = \\frac{768}{3} = 256$ cm³</p>
+                            <p>頂点から底面までの最短距離は高さそのものなので、12cmとなります。</p>
+                        </div>
+                    `;
+                });
+                
+                compoundBtn.addEventListener('click', function() {
+                    currentShape = 'compound';
+                    setActiveButton(this);
+                });
+                
+                // アクティブボタンの設定
+                function setActiveButton(button) {
+                    // すべてのボタンからactiveクラスを削除
+                    document.querySelectorAll('.shape-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // クリックされたボタンにactiveクラスを追加
+                    button.classList.add('active');
+                    
+                    // 回転をリセット
+                    rotX = 0;
+                    rotY = 0;
+                }
+            });
+        </script>
+
     </div>
+</section>
+
+<!-- p5.jsの実装コード -->
+<script>
+    let currentShape = 'cube';
+    let angle = 0;
+    let rotSpeed = 0.01;
+    let showSolution = false;
+    let myFont;
+    let p5Canvas;
     
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>知行教育について</h3>
-                <p>知行教育は2025年に設立された非営利教育リソース共有プラットフォームで、質の高い総合的な学習リソースの提供に努めています。様々な学習資料を共有し、自主学習とスマート教育をサポートしています。</p>
-            </div>
-            <div class="footer-column">
-                <h3>学習リソース</h3>
-                <ul>
-                    <li><a href="../index.html#primary">基礎教育</a></li>
-                    <li><a href="../index.html#languages">語学学習リソース</a></li>
-                    <li><a href="../index.html#it">ITとAI学習リソース</a></li>
-                    <li><a href="#">学習ツールダウンロード</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>ヘルプセンター</h3>
-                <ul>
-                    <li><a href="#">利用ガイド</a></li>
-                    <li><a href="#">よくある質問</a></li>
-                    <li><a href="#">リソースフィードバック</a></li>
-                    <li><a href="#">学習アドバイス</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3>お問い合わせ</h3>
-                <p>ご質問やご提案がございましたら、以下の方法でお問い合わせください：</p>
-                <p>Eメール：contact@zhixing-edu.com</p>
-            </div>
+    function switchShape(shape) {
+        currentShape = shape;
+        showSolution = false;
+        updateExplanation();
+    }
+    
+    function toggleSolution() {
+        showSolution = !showSolution;
+    }
+    
+    function updateExplanation() {
+        const explanationDiv = document.getElementById('shape-explanation');
+        let content = '';
+        
+        switch(currentShape) {
+            case 'cube':
+                content = `
+                    <h3>立方体の性質</h3>
+                    <p>立方体は6つの正方形で囲まれた立体図形です。一辺の長さを a とすると：</p>
+                    <ul>
+                        <li>体積 = a³</li>
+                        <li>表面積 = 6a²</li>
+                        <li>対角線の長さ = a√3</li>
+                    </ul>
+                    <div class="example-box">
+                        <h4>例題：立方体の対角線</h4>
+                        <p>一辺が5cmの立方体の対角線の長さを求めなさい。</p>
+                        <div class="example-solution">
+                            <p><strong>解答</strong></p>
+                            <p>立方体の対角線の長さ = a√3 = 5√3 ≈ 8.66 cm</p>
+                            <p>解法のポイント：立方体の対角線は、三平方の定理を3次元に拡張して求めることができます。</p>
+                        </div>
+                        <button onclick="toggleSolution()" class="solution-button">解説を表示/非表示</button>
+                    </div>
+                `;
+                break;
+            case 'prism':
+                content = `
+                    <h3>三角柱の性質</h3>
+                    <p>三角柱は2つの三角形の底面とそれらをつなぐ3つの長方形の側面からなる立体です。</p>
+                    <ul>
+                        <li>体積 = 底面積 × 高さ</li>
+                        <li>表面積 = 2 × 底面積 + 側面積</li>
+                    </ul>
+                    <div class="example-box">
+                        <h4>例題：正三角柱の体積</h4>
+                        <p>底面が一辺4cmの正三角形で、高さが6cmの三角柱の体積を求めなさい。</p>
+                        <div class="example-solution">
+                            <p><strong>解答</strong></p>
+                            <p>正三角形の面積 = (√3/4) × 4² = 4√3 cm²</p>
+                            <p>三角柱の体積 = 底面積 × 高さ = 4√3 × 6 = 24√3 ≈ 41.57 cm³</p>
+                        </div>
+                        <button onclick="toggleSolution()" class="solution-button">解説を表示/非表示</button>
+                    </div>
+                `;
+                break;
+            case 'cylinder':
+                content = `
+                    <h3>円柱の性質</h3>
+                    <p>円柱は2つの円形の底面とそれらをつなぐ曲面からなる立体です。半径を r、高さを h とすると：</p>
+                    <ul>
+                        <li>体積 = πr²h</li>
+                        <li>表面積 = 2πr² + 2πrh（底面積2つ + 側面積）</li>
+                    </ul>
+                    <div class="example-box">
+                        <h4>例題：円柱の水かさ</h4>
+                        <p>底面の半径が5cm、高さが10cmの円柱の容器に、底から3cmの高さまで水が入っています。この水の体積を求めなさい。</p>
+                        <div class="example-solution">
+                            <p><strong>解答</strong></p>
+                            <p>水の体積 = πr²h = π × 5² × 3 = 75π ≈ 235.6 cm³</p>
+                            <p>解法のポイント：部分的に満たされた容器の体積は、その部分の高さを使って計算します。</p>
+                        </div>
+                        <button onclick="toggleSolution()" class="solution-button">解説を表示/非表示</button>
+                    </div>
+                `;
+                break;
+            case 'pyramid':
+                content = `
+                    <h3>四角錐の性質</h3>
+                    <p>四角錐は正方形の底面と頂点、そしてそれらをつなぐ4つの三角形の側面からなる立体です。</p>
+                    <ul>
+                        <li>体積 = (1/3) × 底面積 × 高さ</li>
+                        <li>表面積 = 底面積 + 側面積の和</li>
+                    </ul>
+                    <div class="example-box">
+                        <h4>例題：四角錐の体積</h4>
+                        <p>底面が一辺6cmの正方形で、高さが8cmの四角錐の体積を求めなさい。</p>
+                        <div class="example-solution">
+                            <p><strong>解答</strong></p>
+                            <p>底面積 = 6² = 36 cm²</p>
+                            <p>四角錐の体積 = (1/3) × 36 × 8 = 96 cm³</p>
+                            <p>解法のポイント：錐体の体積は、同じ底面と高さを持つ柱体の体積の1/3です。</p>
+                        </div>
+                        <button onclick="toggleSolution()" class="solution-button">解説を表示/非表示</button>
+                    </div>
+                `;
+                break;
+            case 'complex':
+                content = `
+                    <h3>複合立体の問題</h3>
+                    <p>複合立体とは、複数の基本的な立体が組み合わさってできる図形です。解法のポイントは、分割または差分で考えることです。</p>
+                    <div class="example-box">
+                        <h4>例題：直方体から円柱を取り除いた立体</h4>
+                        <p>一辺10cmの立方体の中心から、底面に垂直な半径3cmの円柱を取り除きました。残った立体の体積を求めなさい。</p>
+                        <div class="example-solution">
+                            <p><strong>解答</strong></p>
+                            <p>立方体の体積 = 10³ = 1000 cm³</p>
+                            <p>円柱の体積 = πr²h = π × 3² × 10 = 90π cm³</p>
+                            <p>残った立体の体積 = 1000 - 90π ≈ 1000 - 282.7 ≈ 717.3 cm³</p>
+                        </div>
+                        <button onclick="toggleSolution()" class="solution-button">解説を表示/非表示</button>
+                    </div>
+                `;
+                break;
+            case 'section':
+                content = `
+                    <h3>立体の切断</h3>
+                    <p>立体を平面で切断すると、様々な断面図形が現れます。これらの断面の形状や面積を求める問題が入試ではよく出題されます。</p>
+                    <div class="example-box">
+                        <h4>例題：立方体の切断</h4>
+                        <p>一辺が6cmの立方体があります。この立方体の対角線を通る平面で切断した時の断面の面積を求めなさい。</p>
+                        <div class="example-solution">
+                            <p><strong>解答</strong></p>
+                            <p>立方体の対角線を通る平面で切ると、断面は正六角形になります。</p>
+                            <p>この正六角形の面積は = 6² × √2 = 36√2 ≈ 50.91 cm²</p>
+                            <p>解法のポイント：切断面と立方体の各辺との交点を考えると、正六角形になることがわかります。</p>
+                        </div>
+                        <button onclick="toggleSolution()" class="solution-button">解説を表示/非表示</button>
+                    </div>
+                `;
+                break;
+        }
+        
+        explanationDiv.innerHTML = content;
+    }
+    
+    // p5.jsのスケッチ
+    const sketch = function(p) {
+        p.setup = function() {
+            p5Canvas = p.createCanvas(500, 400, p.WEBGL);
+            p5Canvas.parent('p5-canvas');
+            p.colorMode(p.RGB);
+            p.angleMode(p.RADIANS);
+            p.perspective(p.PI/3.0, p.width/p.height, 0.1, 1000);
+        };
+        
+        p.draw = function() {
+            p.background(240);
+            p.orbitControl(2, 2, 0.2);
+            
+            p.ambientLight(100);
+            p.pointLight(255, 255, 255, 0, -100, 100);
+            p.pointLight(200, 200, 200, 0, 100, -100);
+            
+            // 回転
+            p.rotateY(angle);
+            angle += rotSpeed;
+            
+            // 座標軸を描画
+            drawAxes(p);
+            
+            switch(currentShape) {
+                case 'cube':
+                    drawCube(p);
+                    if (showSolution) {
+                        drawCubeDiagonal(p);
+                    }
+                    break;
+                case 'prism':
+                    drawTriangularPrism(p);
+                    break;
+                case 'cylinder':
+                    drawCylinder(p);
+                    if (showSolution) {
+                        drawPartialCylinder(p);
+                    }
+                    break;
+                case 'pyramid':
+                    drawSquarePyramid(p);
+                    break;
+                case 'complex':
+                    drawComplexSolid(p);
+                    break;
+                case 'section':
+                    drawCubeWithSection(p);
+                    break;
+            }
+        };
+    };
+    
+    function drawAxes(p) {
+        // X軸（赤）
+        p.push();
+        p.stroke(255, 0, 0);
+        p.line(0, 0, 0, 150, 0, 0);
+        p.pop();
+        
+        // Y軸（緑）
+        p.push();
+        p.stroke(0, 255, 0);
+        p.line(0, 0, 0, 0, 150, 0);
+        p.pop();
+        
+        // Z軸（青）
+        p.push();
+        p.stroke(0, 0, 255);
+        p.line(0, 0, 0, 0, 0, 150);
+        p.pop();
+    }
+    
+    function drawCube(p) {
+        p.push();
+        p.translate(0, 0, 0);
+        p.noStroke();
+        p.fill(100, 150, 200, 200);
+        p.box(100);
+        
+        // エッジを描画
+        p.stroke(0);
+        p.strokeWeight(2);
+        p.noFill();
+        p.box(100);
+        p.pop();
+    }
+    
+    function drawCubeDiagonal(p) {
+        p.push();
+        p.stroke(255, 0, 0);
+        p.strokeWeight(3);
+        p.line(-50, -50, -50, 50, 50, 50);
+        p.pop();
+    }
+    
+    function drawTriangularPrism(p) {
+        p.push();
+        p.translate(0, 10, 0);
+        
+        // 三角柱の定義（底面は正三角形）
+        const height = 120;
+        const side = 100;
+        const h = side * Math.sqrt(3) / 2; // 正三角形の高さ
+        
+        p.beginShape();
+        // 底面（下の三角形）
+        p.fill(100, 150, 200, 200);
+        p.vertex(0, -height/2, -h/3 * 2);
+        p.vertex(-side/2, -height/2, h/3);
+        p.vertex(side/2, -height/2, h/3);
+        
+        // 上面（上の三角形）
+        p.vertex(0, height/2, -h/3 * 2);
+        p.vertex(-side/2, height/2, h/3);
+        p.vertex(side/2, height/2, h/3);
+        p.endShape(p.CLOSE);
+        
+        // エッジを描画
+        p.stroke(0);
+        p.strokeWeight(2);
+        p.noFill();
+        
+        // 底面
+        p.beginShape();
+        p.vertex(0, -height/2, -h/3 * 2);
+        p.vertex(-side/2, -height/2, h/3);
+        p.vertex(side/2, -height/2, h/3);
+        p.endShape(p.CLOSE);
+        
+        // 上面
+        p.beginShape();
+        p.vertex(0, height/2, -h/3 * 2);
+        p.vertex(-side/2, height/2, h/3);
+        p.vertex(side/2, height/2, h/3);
+        p.endShape(p.CLOSE);
+        
+        // 側面のエッジ
+        p.line(0, -height/2, -h/3 * 2, 0, height/2, -h/3 * 2);
+        p.line(-side/2, -height/2, h/3, -side/2, height/2, h/3);
+        p.line(side/2, -height/2, h/3, side/2, height/2, h/3);
+        
+        p.pop();
+    }
+    
+    function drawCylinder(p) {
+        p.push();
+        p.translate(0, 0, 0);
+        p.rotateX(p.HALF_PI);
+        
+        const radius = 50;
+        const height = 100;
+        
+        // 円柱本体
+        p.fill(100, 150, 200, 200);
+        p.cylinder(radius, height);
+        
+        // エッジを描画
+        p.stroke(0);
+        p.strokeWeight(2);
+        p.noFill();
+        p.cylinder(radius, height);
+        
+        if (showSolution) {
+            // 水位を表示（3cm分 = 高さの30%）
+            p.push();
+            p.translate(0, height * 0.35, 0);
+            p.fill(0, 100, 255, 150);
+            p.cylinder(radius, height * 0.3);
+            p.pop();
+        }
+        
+        p.pop();
+    }
+    
+    function drawPartialCylinder(p) {
+        p.push();
+        p.translate(0, 25, 100);
+        p.rotateX(p.HALF_PI);
+        p.scale(0.6);
+        
+        const radius = 50;
+        const height = 30; // 部分的な高さ (3cm相当)
+        
+        // 水部分
+        p.fill(0, 100, 255, 150);
+        p.cylinder(radius, height);
+        
+        p.stroke(0, 0, 255);
+        p.strokeWeight(2);
+        p.noFill();
+        p.cylinder(radius, height);
+        
+        // 説明テキスト
+        p.push();
+        p.rotateX(p.HALF_PI);
+        p.fill(0);
+        p.text("水の体積 = πr²h", 60, 0);
+        p.pop();
+        
+        p.pop();
+    }
+    
+    function drawSquarePyramid(p) {
+        p.push();
+        p.translate(0, 20, 0);
+        
+        const baseSize = 100;
+        const height = 120;
+        
+        // 底面（正方形）
+        p.fill(100, 150, 200, 200);
+        p.beginShape();
+        p.vertex(-baseSize/2, height/2, -baseSize/2);
+        p.vertex(baseSize/2, height/2, -baseSize/2);
+        p.vertex(baseSize/2, height/2, baseSize/2);
+        p.vertex(-baseSize/2, height/2, baseSize/2);
+        p.endShape(p.CLOSE);
+        
+        // 側面（4つの三角形）
+        // 前面
+        p.beginShape();
+        p.vertex(-baseSize/2, height/2, -baseSize/2);
+        p.vertex(baseSize/2, height/2, -baseSize/2);
+        p.vertex(0, -height/2, 0);
+        p.endShape(p.CLOSE);
+        
+        // 右面
+        p.beginShape();
+        p.vertex(baseSize/2, height/2, -baseSize/2);
+        p.vertex(baseSize/2, height/2, baseSize/2);
+        p.vertex(0, -height/2, 0);
+        p.endShape(p.CLOSE);
+        
+        // 後面
+        p.beginShape();
+        p.vertex(baseSize/2, height/2, baseSize/2);
+        p.vertex(-baseSize/2, height/2, baseSize/2);
+        p.vertex(0, -height/2, 0);
+        p.endShape(p.CLOSE);
+        
+        // 左面
+        p.beginShape();
+        p.vertex(-baseSize/2, height/2, baseSize/2);
+        p.vertex(-baseSize/2, height/2, -baseSize/2);
+        p.vertex(0, -height/2, 0);
+        p.endShape(p.CLOSE);
+        
+        // エッジを描画
+        p.stroke(0);
+        p.strokeWeight(2);
+        p.noFill();
+        
+        // 底面
+        p.beginShape();
+        p.vertex(-baseSize/2, height/2, -baseSize/2);
+        p.vertex(baseSize/2, height/2, -baseSize/2);
+        p.vertex(baseSize/2, height/2, baseSize/2);
+        p.vertex(-baseSize/2, height/2, baseSize/2);
+        p.endShape(p.CLOSE);
+        
+        // 頂点への線
+        p.line(-baseSize/2, height/2, -baseSize/2, 0, -height/2, 0);
+        p.line(baseSize/2, height/2, -baseSize/2, 0, -height/2, 0);
+        p.line(baseSize/2, height/2, baseSize/2, 0, -height/2, 0);
+        p.line(-baseSize/2, height/2, baseSize/2, 0, -height/2, 0);
+        
+        p.pop();
+    }
+    
+    function drawComplexSolid(p) {
+        p.push();
+        p.translate(0, 0, 0);
+        
+        // 立方体を描画
+        p.fill(100, 150, 200, 100);
+        p.box(100);
+        
+        // 円柱を描画（立方体から取り除く部分）
+        p.push();
+        p.rotateX(p.HALF_PI);
+        p.fill(255, 100, 100, 150);
+        p.cylinder(30, 100);
+        
+        // 円柱のエッジ
+        p.stroke(255, 0, 0);
+        p.strokeWeight(2);
+        p.noFill();
+        p.cylinder(30, 100);
+        p.pop();
+        
+        // 立方体のエッジ
+        p.stroke(0);
+        p.strokeWeight(2);
+        p.noFill();
+        p.box(100);
+        
+        p.pop();
+    }
+    
+    function drawCubeWithSection(p) {
+        p.push();
+        p.translate(0, 0, 0);
+        
+        // 立方体を描画
+        p.fill(100, 150, 200, 100);
+        p.box(100);
+        
+        // 立方体のエッジ
+        p.stroke(0);
+        p.strokeWeight(2);
+        p.noFill();
+        p.box(100);
+        
+        // 切断面（対角線を通る平面）
+        p.push();
+        p.fill(255, 100, 100, 180);
+        p.beginShape();
+        p.vertex(-50, -50, -50);
+        p.vertex(50, -50, -50);
+        p.vertex(50, 50, -50);
+        p.vertex(50, 50, 50);
+        p.vertex(-50, 50, 50);
+        p.vertex(-50, -50, 50);
+        p.endShape(p.CLOSE);
+        
+        // 切断面のエッジ
+        p.stroke(255, 0, 0);
+        p.strokeWeight(2);
+        p.noFill();
+        p.beginShape();
+        p.vertex(-50, -50, -50);
+        p.vertex(50, -50, -50);
+        p.vertex(50, 50, -50);
+        p.vertex(50, 50, 50);
+        p.vertex(-50, 50, 50);
+        p.vertex(-50, -50, 50);
+        p.endShape(p.CLOSE);
+        p.pop();
+        
+        p.pop();
+    }
+    
+    // p5インスタンスを作成
+    const myp5 = new p5(sketch);
+    
+    // 初期説明を表示
+    document.addEventListener('DOMContentLoaded', function() {
+        updateExplanation();
+    });
+
+    // ボタンのスタイルを追加
+    document.addEventListener('DOMContentLoaded', function() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .solution-button {
+                background-color: #2185d0;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-top: 10px;
+                font-size: 14px;
+            }
+            
+            .solution-button:hover {
+                background-color: #1678c2;
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>知行教育について</h3>
+            <ul>
+                <li><a href="../about.html">私たちについて</a></li>
+                <li><a href="../contact.html">お問い合わせ</a></li>
+                <li><a href="../privacy.html">プライバシーポリシー</a></li>
+                <li><a href="../terms.html">利用規約</a></li>
+            </ul>
         </div>
-        <div class="copyright">
-            <p>&copy; 2025 知行教育 | 教育リソース共有プラットフォーム | 最終更新：2025年4月27日</p>
+        <div class="footer-column">
+            <h3>コース</h3>
+            <ul>
+                <li><a href="../index.html#primary">基礎教育</a></li>
+                <li><a href="../index.html#languages">語学教育</a></li>
+                <li><a href="../index.html#it">ITとAI教育</a></li>
+            </ul>
         </div>
-    </footer>
+        <div class="footer-column">
+            <h3>リソース</h3>
+            <ul>
+                <li><a href="../resources.html">学習リソース</a></li>
+                <li><a href="../blog.html">ブログ</a></li>
+                <li><a href="../faq.html">よくある質問</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>フォローする</h3>
+            <ul>
+                <li><a href="https://twitter.com">Twitter</a></li>
+                <li><a href="https://facebook.com">Facebook</a></li>
+                <li><a href="https://instagram.com">Instagram</a></li>
+                <li><a href="https://linkedin.com">LinkedIn</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; 2023 知行教育. All rights reserved.
+    </div>
+</footer>
 </body>
 </html>
